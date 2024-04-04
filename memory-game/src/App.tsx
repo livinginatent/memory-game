@@ -6,6 +6,7 @@ function App() {
   const [clickAmount, setClickAmount] = useState<number>(0);
   const [clickedGridValues, setClickedGridValues] = useState<number[]>([]);
   const [correct, setCorrect] = useState<boolean>(false);
+  
 
   //TODO: initialize grid items array, each item taking a number and isVisible boolean
 
@@ -48,18 +49,32 @@ function App() {
     setGridItems(shuffledItems());
   }, []);
 
-
   //TODO: when a specific grid is clicked, show that grid's value.
-  const handleClick = (index: number) => {
-    if (clickAmount >= 2 && !clickedGridValues.includes(index)) {
-      return;
+  /* const handleClick = (index: number) => {
+    if (clickAmount >=2 && clickedGridValues[0] !== clickedGridValues[1]) {
+      setTimeout(() => {
+        setGridItems((currentItems) =>
+          currentItems.map((item) => {
+            return { ...item, isVisible: false };
+          })
+        );
+      }, 1000);
+      return
     }
 
-    if (clickedGridValues.includes(index)) {
-      setClickedGridValues((prev) => prev.filter((item) => item !== index));
+    if (clickedGridValues.includes(gridItems[index].number)) {
+      setClickedGridValues((prev) =>
+        prev.filter((item) => item !== gridItems[index].number)
+      );
       setClickAmount((prev) => prev - 2); // Decrement click amount after removing
     } else {
-      setClickedGridValues((prev) => [...prev, index]);
+      setClickedGridValues((prev) => [...prev, gridItems[index].number]);
+      if (
+        clickedGridValues.length === 2 &&
+        clickedGridValues[0] === clickedGridValues[1]
+      ) {
+        console.log("first");
+      }
     }
 
     setGridItems((currentItems) =>
@@ -70,13 +85,25 @@ function App() {
         return item;
       })
     );
-   console.log(gridItems[index])
+   
+  };
+ */
 
-    setClickAmount((prev) => prev + 1);
+  const handleClick = (index: number) => {
+    setClickAmount((prev)=>prev+1)
+    setGridItems((currentItems) =>
+      currentItems.map((item, i) => {
+        if (i === index) {
+          return { ...item, isVisible: !item.isVisible };
+        }
+        return item;
+      })
+    );
   };
 
   useEffect(() => {
-    console.log(clickedGridValues.length);
+    console.log(clickedGridValues);
+    console.log(clickAmount);
   }, [clickedGridValues]);
 
   return (
@@ -84,10 +111,11 @@ function App() {
       <div className="grid-container">
         {gridItems?.map((grid, i) => (
           <div
+           
             onClick={() => handleClick(i)}
             key={i}
             className="grid-item"
-            style={{ backgroundColor: correct ? "red" : "white" }}
+            style={{ backgroundColor: correct ? "red" : "white",}}
           >
             <p className="value" key={i}>
               {grid.isVisible ? grid.number : ""}
