@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   const numbers = [1, 2, 3, 4, 5, 6];
   const [clickAmount, setClickAmount] = useState<number>(0);
-  const [clickedGrids, setClickedGrids] = useState<number[]>([]);
+  const [clickedGridValues, setClickedGridValues] = useState<number[]>([]);
   const [correct, setCorrect] = useState<boolean>(false);
 
   //TODO: initialize grid items array, each item taking a number and isVisible boolean
@@ -47,17 +47,19 @@ function App() {
   useEffect(() => {
     setGridItems(shuffledItems());
   }, []);
+
+
   //TODO: when a specific grid is clicked, show that grid's value.
   const handleClick = (index: number) => {
-    if (clickAmount >= 2 && !clickedGrids.includes(index)) {
+    if (clickAmount >= 2 && !clickedGridValues.includes(index)) {
       return;
     }
 
-    if (clickedGrids.includes(index)) {
-      setClickedGrids((prev) => prev.filter((item) => item !== index));
+    if (clickedGridValues.includes(index)) {
+      setClickedGridValues((prev) => prev.filter((item) => item !== index));
       setClickAmount((prev) => prev - 2); // Decrement click amount after removing
     } else {
-      setClickedGrids((prev) => [...prev, index]);
+      setClickedGridValues((prev) => [...prev, index]);
     }
 
     setGridItems((currentItems) =>
@@ -68,11 +70,15 @@ function App() {
         return item;
       })
     );
+   console.log(gridItems[index])
 
     setClickAmount((prev) => prev + 1);
   };
 
- 
+  useEffect(() => {
+    console.log(clickedGridValues.length);
+  }, [clickedGridValues]);
+
   return (
     <>
       <div className="grid-container">
