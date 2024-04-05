@@ -25,12 +25,12 @@
   width: 400px;
 }
 .grid-item {
- 
   border: 1px solid rgba(0, 0, 0, 0.8);
   padding: 20px;
   font-size: 30px;
   text-align: center;
   color: black;
+   height: 70px;
 }
 
 @keyframes logo-spin {
@@ -55,8 +55,11 @@
 .read-the-docs {
   color: #888;
 }
+.grid-item.matched {
+  background-color: green;
+ 
 
+}
 .value {
-  height: 60px;
-  width: 60px;
+
 }
